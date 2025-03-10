@@ -1,3 +1,52 @@
+const baseurl = 'http://localhost:8000';
+let mode ='CREATE'//defualt mode
+let selectedID = ''
+
+window.onload = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    console.log('id',id);
+    if (id){
+        mode = 'EDIT'
+        selectedID = id
+        //1.เราจะดึงข้อมูลของ user คนนั้นออกมา
+        try{
+            const response = await axios.get(`${baseurl}/users/${id}`);
+            console.log('response',response.data);
+            const user = response.data;
+            //2.นำข้อมูลที่ดึงออกมาไปแสดงใน input form
+            let firstNameDOM = document.querySelector('input[name = firstname]')
+            let lastNameDOM = document.querySelector('input[name =lastname]');
+            let ageDOM = document.querySelector('input[name =age]');
+            let descriptionDOM = document.querySelector('textarea[name=description]');
+            firstNameDOM.value = user.firstname;
+            lastNameDOM.value = user.lastname;
+            ageDOM.value = user.age;
+            descriptionDOM.value = user.description;
+
+        let genderDOMs = document.querySelectorAll('input[name= gender]') ;
+        let interestDOM = document.querySelectorAll('input[name=interests]') ; 
+        for (let i=0; i<genderDOMs.length; i++){
+            if (genderDOMs[i].value == user.gender){
+                genderDOMs[i].checked = true;
+            }
+        }
+        
+        console.log('interest',user.interests);
+        for (let i=0; i<interestDOM.length; i++){
+            if (user.interests.includes(interestDOM[i].value)){
+                // includes = ตรวจสอบว่ามีค่านี้อยู่ใน array หรือไม่ ถ้ามี return true ถ้าไม่มี return false
+                interestDOM[i].checked = true;
+            }
+        }
+        
+            
+        }catch(error){
+            console.error('error',error);
+        }
+        
+    }
+}
 const validateData = (userData) => {
     let errors =[]
 
@@ -13,22 +62,22 @@ const validateData = (userData) => {
     if (!userData.gender){
         errors.push('กรุณาเลือกเพศ');
     }
-    if (!userData.interest){
+    if (!userData.interests){
         errors.push('กรุณาเลือกความสนใจ');
     }
     if (!userData.description){
         errors.push('กรุณากรอกข้อมูล');
     }
     return errors;
- } // data validation
+} // data validation
 
  
- const submitData = async () => {
+const submitData = async () => {
     let firstNameDOM = document.querySelector('input[name = firstname]')
     let lastNameDOM = document.querySelector('input[name =lastname]');
     let ageDOM = document.querySelector('input[name =age]');
     let genderDOM = document.querySelector('input[name= gender]:checked') || {};
-    let interestDOM = document.querySelectorAll('input[name=interest]:checked') || {}; //null = อ่านค่าไม่ได้ error {} = ไม่มีค่ายังอ่านได้
+    let interestDOM = document.querySelectorAll('input[name=interests]:checked') || {}; //null = อ่านค่าไม่ได้ error {} = ไม่มีค่ายังอ่านได้
     let descriptionDOM = document.querySelector('textarea[name=description]');
 
     let messageDOM = document.getElementById('message');
@@ -47,8 +96,9 @@ const validateData = (userData) => {
         lastname: lastNameDOM.value,
         age: ageDOM.value,
         gender: genderDOM.value,
+        interests: interests,
         description: descriptionDOM.value,
-        interest: interest,
+        
         
     }
 
@@ -63,9 +113,16 @@ const validateData = (userData) => {
             }
         }
             */
-        const response =  await axios.post('http://localhost:8000/users',userData)
+        let message = 'บันทึกข้อมูลเรียบร้อยแล้ว'
+        if (mode == 'CREATE'){
+        const response =  await axios.post(`${baseurl}/users`,userData)
         console.log('response',response.data);
-        messageDOM.innerText = 'บันทึกข้อมูลเรียบร้อยแล้ว';
+        }else{
+            const response =  await axios.put(`${baseurl}/users/${selectedID}`,userData)
+            message = 'แก้ไขข้อมูลเรียบร้อยแล้ว'
+            console.log('response',response.data);
+        }
+        messageDOM.innerText = message
         messageDOM.className = 'message success';
     }catch(error){
         console.log('error message',error.message);
