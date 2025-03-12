@@ -83,11 +83,11 @@ const submitData = async () => {
     let messageDOM = document.getElementById('message');
 
     try{
-    let interest='';
+    let interests='';
     for(let i=0; i<interestDOM.length; i++){
-        interest += interestDOM[i].value;
+        interests += interestDOM[i].value;
         if (i !=interestDOM.length-1){
-            interest += ',';
+            interests += ',';
         }
     }
 
@@ -102,7 +102,7 @@ const submitData = async () => {
         
     }
 
-    console.log('submit data',userData);
+    console.log('submitdata',userData);
 /*
         const errors = validateData(userData);
         if (errors.length > 0)//มี errorเกิดขึ้นกี่ตำแหน่ง

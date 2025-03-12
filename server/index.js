@@ -35,7 +35,7 @@ const validateData = (userData) => {
     if (!userData.gender){
         errors.push('กรุณาเลือกเพศ');
     }
-    if (!userData.interest){
+    if (!userData.interests){
         errors.push('กรุณาเลือกความสนใจ');
     }
     if (!userData.description){
