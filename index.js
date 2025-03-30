@@ -103,16 +103,6 @@ const submitData = async () => {
     }
 
     console.log('submitdata',userData);
-/*
-        const errors = validateData(userData);
-        if (errors.length > 0)//มี errorเกิดขึ้นกี่ตำแหน่ง
-        {
-            throw{
-                message:'กรุณากรอกข้อมูลให้ครบถ้วน',
-                errors: errors
-            }
-        }
-            */
         let message = 'บันทึกข้อมูลเรียบร้อยแล้ว'
         if (mode == 'CREATE'){
         const response =  await axios.post(`${baseurl}/users`,userData)

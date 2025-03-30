@@ -12,23 +12,28 @@ table{
     border-collapse: collapse;
     border: 3px solid black;
     background-color: yellow;
+    max-width: 1048px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 td{
     border: 3px solid black;
 }
+
 .bg{
     background-image: url('Yaho.jpg');
 }
 
 .container{
     width: 100%;
-    max-width: 640px;
+    max-width: 786px;
     margin-left: auto;
     margin-right: auto;
     background-color: orange;
     padding: 20px;
     box-sizing: border-box;
+    border : 2px solid black;
 }
 
 .header{
